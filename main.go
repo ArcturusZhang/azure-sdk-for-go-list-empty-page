@@ -19,9 +19,9 @@ var (
 )
 
 func main() {
-	subsID = os.Getenv("SUBSCRITION_ID")
+	subsID = os.Getenv("SUBSCRIPTION_ID")
 	if subsID == "" {
-		panic("Empty SUBSCRITION_ID")
+		panic("Empty SUBSCRIPTION_ID")
 	}
 	groupName = os.Getenv("GROUP_NAME")
 	if groupName == "" {

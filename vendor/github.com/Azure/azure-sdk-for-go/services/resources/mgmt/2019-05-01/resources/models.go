@@ -1272,6 +1272,10 @@ type ListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // ListResultIterator provides access to a complete listing of GenericResourceExpanded values.
 type ListResultIterator struct {
 	i    int
@@ -1343,7 +1347,7 @@ func (lr ListResult) IsEmpty() bool {
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1377,7 +1381,7 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			return err
 		}
 		page.lr = next
-		if next.NextLink == nil || (next.Value != nil && len(*next.Value) != 0) {
+		if !next.hasNextLink() || !next.IsEmpty() {
 			break
 		}
 	}

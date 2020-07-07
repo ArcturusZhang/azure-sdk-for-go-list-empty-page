@@ -896,7 +896,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 		err = autorest.NewErrorWithError(err, "resources.Client", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 	
-	if result.lr.NextLink != nil && (result.lr.Value == nil || len(*result.lr.Value) == 0) {
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
 		// empty page with non-nil next link
 		err = result.NextWithContext(ctx)
 	}
